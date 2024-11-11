@@ -101,7 +101,6 @@ These elements provide a wide variety of input options for form-based Flutter ap
 
 In Flutter, themes help to maintain consistent styling throughout the application, including colors, fonts, and widget appearances. Themes are defined in the `MaterialApp` widget, allowing you to control the visual styling of your entire app from a single place. This approach ensures a unified look and feel across screens, reducing the need for inline styling.
 
----
 
 ## How to Set a Theme in Flutter
 
@@ -140,7 +139,6 @@ In my application I didn't implement a theme
 
 In a multi-page Flutter application, navigation is managed using the `Navigator` widget. The `Navigator` widget maintains a stack-based structure, allowing pages (also called routes) to be pushed onto or popped off the stack. This README explains key methods for navigation, as well as how to use named routes for more efficient management.
 
----
 
 ## Key Methods for Navigation
 
