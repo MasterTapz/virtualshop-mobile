@@ -31,3 +31,126 @@ In Dart, both const and final are used to create variables that cannot be reassi
 ## Explain how you implemented the checklist above step-by-step.
 
 First I created a new folder virtualshop-mobile and a github repository. After that is done I create a new flutter app and also change the flutter config to enable web support. After that is done I created the menu.dart file inside the lib folder. After that is done I copy the main.dart and menu.dart tutorial code, then I modify the menu.dart so it followed the requirements that the assignment needs.
+
+
+
+# ASSIGNMENT 8
+
+
+## What is the purpose of const in Flutter? Explain the advantages of using const in Flutter code. When should we use const, and when should it not be used?
+
+In Flutter, `const` is used to create compile-time constants. It is particularly useful for optimizing performance in widget trees by making widgets immutable. When you declare a widget or variable as `const`, Flutter knows that it won't change, allowing the widget to be built only once and reused whenever needed without being rebuilt.
+
+### Advantages of using `const` in Flutter
+- **Improves Performance**: Constant widgets don’t need to be rebuilt, which reduces unnecessary widget rebuilds.
+- **Optimizes Memory Usage**: Since `const` widgets are reused, memory usage is minimized because they are stored once and referenced multiple times.
+- **Code Clarity and Safety**: Declaring values as `const` signals that these values won’t change, helping to avoid bugs related to unintended changes.
+
+### When to Use `const`
+- Use `const` for widgets that won’t change after they are created (e.g., `Text` with static content, decorations, padding).
+- Apply `const` when initializing objects that take only constant values, like `TextStyle` and `EdgeInsets`.
+
+### When Not to Use `const`
+- Don’t use `const` when the widget or value might change based on user interaction or app state, as this would require a rebuild.
+- Avoid `const` in widgets that rely on dynamic data or variables that might change over time.
+
+
+
+## Explain and compare the usage of Column and Row in Flutter. Provide example implementations of each layout widget!
+
+In Flutter, `Column` and `Row` are layout widgets used to arrange their child widgets vertically (`Column`) and horizontally (`Row`). Both widgets allow you to align, space, and organize multiple children flexibly.
+
+### Column
+- Arranges widgets vertically.
+- Ideal for layouts where elements need to be stacked on top of each other.
+
+#### Example:
+
+```dart
+Column(
+  mainAxisAlignment: MainAxisAlignment.center,
+  crossAxisAlignment: CrossAxisAlignment.start,
+  children: [
+    Text('First Item'),
+    Text('Second Item'),
+    Text('Third Item'),
+  ],
+);
+```
+
+
+## List the input elements you used on the form page in this assignment. Are there other Flutter input elements you didn’t use in this assignment? Explain!
+
+### Input Elements Used
+- **TextFormField**: Used for single-line text input, such as name and description fields.
+- **ElevatedButton**: A clickable button used for form submission or actions.
+
+### Other Flutter Input Elements Not Used
+- **Checkbox**: Used for multi-select options, ideal for things like "terms and conditions."
+- **Radio**: For single-choice selections among multiple options, like payment methods.
+- **Switch**: A toggle for on/off actions, useful for settings.
+- **Slider**: Used to select a numeric value within a range.
+- **DatePicker**: A calendar-based picker for date selection.
+- **DropdownButton**: Allows users to pick an option from a list, useful for lists like country selection.
+
+These elements provide a wide variety of input options for form-based Flutter applications.
+
+
+
+## How do you set the theme within a Flutter application to ensure consistency? Did you implement a theme in your application?
+
+In Flutter, themes help to maintain consistent styling throughout the application, including colors, fonts, and widget appearances. Themes are defined in the `MaterialApp` widget, allowing you to control the visual styling of your entire app from a single place. This approach ensures a unified look and feel across screens, reducing the need for inline styling.
+
+---
+
+## How to Set a Theme in Flutter
+
+To set a theme, define a `ThemeData` object within the `MaterialApp` widget in your `main.dart` file. The `ThemeData` object contains properties for configuring primary colors, text styles, button appearances, and more.
+
+### Example of Theme Setup
+
+```dart
+MaterialApp(
+  theme: ThemeData(
+    primaryColor: Colors.blue,
+    colorScheme: ColorScheme.fromSwatch(
+      primarySwatch: Colors.blue,
+    ).copyWith(
+      secondary: Colors.amber,
+    ),
+    textTheme: TextTheme(
+      bodyText2: TextStyle(color: Colors.black87),
+      headline6: TextStyle(fontWeight: FontWeight.bold),
+    ),
+    buttonTheme: ButtonThemeData(
+      buttonColor: Colors.blue, // Default button color
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+    ),
+  ),
+  home: MyHomePage(),
+);
+
+```
+
+In my application I didn't implement a theme
+
+## How do you manage navigation in a multi-page Flutter application?
+
+In a multi-page Flutter application, navigation is managed using the `Navigator` widget. The `Navigator` widget maintains a stack-based structure, allowing pages (also called routes) to be pushed onto or popped off the stack. This README explains key methods for navigation, as well as how to use named routes for more efficient management.
+
+---
+
+## Key Methods for Navigation
+
+Flutter provides several methods to navigate between screens:
+
+### 1. `Navigator.push`
+This method pushes a new route onto the stack, creating a transition to a new page on top of the current one.
+
+```dart
+Navigator.push(
+  context,
+  MaterialPageRoute(builder: (context) => NewPage()),
+);

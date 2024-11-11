@@ -1,29 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:virtualshop/widgets/left_drawer.dart';
 
 class MyHomePage extends StatelessWidget {
-  MyHomePage({super.key});
-  final String npm = '2306256444'; // NPM
-  final String name = 'Muhammad Brian Subekti'; // Name
-  final String className = 'PBP KKI'; // Class
+  final String npm = '2306256444'; // Updated NPM
+  final String name = 'Muhammad Brian Subekti'; // Updated Name
+  final String className = 'PBP KKI'; // Updated Class
   final List<ItemHomepage> items = [
-    ItemHomepage("View Mood", Icons.mood, Colors.blue),
-    ItemHomepage("Add Mood", Icons.add, Colors.green),
-    ItemHomepage("Logout", Icons.logout, Colors.red),
+    ItemHomepage("View Products", Icons.shopping_cart, Colors.purple),
+    ItemHomepage("Add Product", Icons.add, Colors.purple),
+    ItemHomepage("Logout", Icons.logout, Colors.purple),
   ];
+
+  MyHomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'VirtualShop',
+          'VirtualShop', // Updated title
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
         backgroundColor: Theme.of(context).colorScheme.primary,
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
+      drawer: const LeftDrawer(), // Drawer for navigation
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -44,7 +48,7 @@ class MyHomePage extends StatelessWidget {
                   const Padding(
                     padding: EdgeInsets.only(top: 16.0),
                     child: Text(
-                      'VirtualShop',
+                      'Welcome to VirtualShop!', // Welcome message
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18.0,
@@ -116,7 +120,7 @@ class ItemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: item.backgroundColor, // Set the background color for each item
+      color: item.backgroundColor,
       borderRadius: BorderRadius.circular(12),
       child: InkWell(
         onTap: () {
