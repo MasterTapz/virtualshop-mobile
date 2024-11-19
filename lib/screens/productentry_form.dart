@@ -1,5 +1,9 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import '../widgets/left_drawer.dart'; 
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:virtualshop/screens/menu.dart';
+import '../widgets/left_drawer.dart';
+import 'package:provider/provider.dart'; // For context.watch
 
 class ProductEntryFormPage extends StatefulWidget {
   const ProductEntryFormPage({super.key});
@@ -16,6 +20,8 @@ class _ProductEntryFormPageState extends State<ProductEntryFormPage> {
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
+
     return Scaffold(
       appBar: AppBar(
         title: const Center(
@@ -27,7 +33,7 @@ class _ProductEntryFormPageState extends State<ProductEntryFormPage> {
         foregroundColor: Colors.white,
         iconTheme: const IconThemeData(color: Colors.white),
       ),
-      drawer: const LeftDrawer(), // Add ProductDrawer here
+      drawer: const LeftDrawer(),
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
@@ -53,9 +59,6 @@ class _ProductEntryFormPageState extends State<ProductEntryFormPage> {
                     if (value == null || value.isEmpty) {
                       return "Name of the product cannot be empty!";
                     }
-                    if (int.tryParse(value) != null) {
-                      return "The description cannot be a number!";
-                    }
                     return null;
                   },
                 ),
@@ -78,9 +81,6 @@ class _ProductEntryFormPageState extends State<ProductEntryFormPage> {
                   validator: (String? value) {
                     if (value == null || value.isEmpty) {
                       return "The description cannot be empty!";
-                    }
-                    if (int.tryParse(value) != null) {
-                      return "The description cannot be a number!";
                     }
                     return null;
                   },
@@ -127,35 +127,39 @@ class _ProductEntryFormPageState extends State<ProductEntryFormPage> {
                       backgroundColor: MaterialStateProperty.all(
                           Theme.of(context).colorScheme.primary),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: const Text('Product successfully saved'),
-                              content: SingleChildScrollView(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text('Name: $_name'),
-                                    Text('Description: $_description'),
-                                    Text('Amount: $_amount'),
-                                  ],
-                                ),
-                              ),
-                              actions: [
-                                TextButton(
-                                  child: const Text('OK'),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                    _formKey.currentState!.reset();
-                                  },
-                                ),
-                              ],
-                            );
-                          },
+                        // Send request to Django and wait for the response
+                        final response = await request.postJson(
+                          "http://localhost:8000/create-flutter/",
+                          jsonEncode(<String, String>{
+                            'name': _name,
+                            'description': _description,
+                            'amount': _amount.toString(),
+                          }),
                         );
+                        if (context.mounted) {
+                          if (response['status'] == 'success') {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content:
+                                    Text("New product has been saved successfully!"),
+                              ),
+                            );
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MyHomePage()),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                    "Something went wrong, please try again."),
+                              ),
+                            );
+                          }
+                        }
                       }
                     },
                     child: const Text(
